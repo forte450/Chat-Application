@@ -9,7 +9,7 @@ import Input from '../Input/Input';
 
 import './Chat.css';
 
-const ENDPOINT = 'https://project-chat-application.herokuapp.com/';
+const ENDPOINT = process.env.REACT_APP_ENDPOINT || 'http://localhost:5000';
 
 let socket;
 
@@ -33,6 +33,18 @@ const Chat = ({ location }) => {
         alert(error);
       }
     });
+    // connection error logging
+    socket.on('connect_error', (err) => {
+      console.error('Socket connect error:', err);
+    });
+    socket.on('disconnect', (reason) => {
+      console.warn('Socket disconnected:', reason);
+    });
+
+    return () => {
+      socket.disconnect();
+      socket.off();
+    };
   }, [ENDPOINT, location.search]);
   
   useEffect(() => {

@@ -18,3 +18,19 @@ By the end of this video, you will have a strong understanding of how to send an
 
 Setup:
 - run ```npm i && npm start``` for both client and server side to start the development server
+
+Deployment
+---------
+
+This project is a two-part app (client and server). Vercel is great for the `client` (React), but the `server` uses Socket.io and requires a persistent Node process. Recommended approach:
+
+- Push the repo to GitHub.
+- Deploy the `server` to a Node host that supports persistent WebSocket connections (Render, Railway, or Heroku). When creating the service, set the Root Directory to `server` and the Start Command to `node index.js` (or `npm start` if you've set that script).
+- Deploy the `client` to Vercel: import the repo, set the Project Root to `client`, and set an environment variable `REACT_APP_ENDPOINT` to the server URL (e.g. `https://your-server.onrender.com`).
+
+Notes:
+- The client reads the server URL from `REACT_APP_ENDPOINT` (falls back to `http://localhost:5000` for local dev).
+- Make sure CORS is allowed on the server (the app already uses `cors`).
+- After deployment, set the `REACT_APP_ENDPOINT` value in Vercel's Environment Variables for Production.
+
+If you want, I can: create a short `vercel.json` for the client, prepare a Render deployment guide, or set up GitHub Actions to auto-deploy. Tell me which you prefer.
